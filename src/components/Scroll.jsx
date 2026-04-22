@@ -1,25 +1,41 @@
 import { Cylinder } from './Cylinder.jsx'
 import { useRef, useEffect } from 'react'
+import { useTexture } from '@react-three/drei'
+import * as THREE from 'three'
+import papyrus from '../assets/papyrus.jpg'
 
-export const Scroll = () => {
+export const Scroll = () => {    
     const top = useRef()
     const bottom = useRef()
+    const matRef = useRef()
+
+    const texture = useTexture(papyrus, (t) => {
+        t.wrapS = THREE.RepeatWrapping
+        t.wrapT = THREE.RepeatWrapping
+        t.repeat.set(1, 0.5)
+    })
 
     useEffect(() => {
         const handleScroll = () => {
-            const y = window.scrollY * 0.01 // tweak multiplier to taste
-            top.current.rotation.y = y
-            bottom.current.rotation.y = -y
-        }
+        const scrollY = window.scrollY
+        const x = scrollY * 0.01
+        top.current.rotation.x = x
+        bottom.current.rotation.x = x
+        matRef.current.map.offset.y = x * 0.1
+    }
 
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
     return (
         <>
-            <Cylinder position={[0, 6, 0]} rotation={[0, 0, Math.PI / 2]} ref={top} />
-            <Cylinder position={[0, -8, 0]} rotation={[0, 0, Math.PI / 2]} ref={bottom} />
+            <Cylinder position={[0, 10, 0]} rotation={[0, 0, Math.PI / 2]} ref={top} />
+            <mesh> 
+                <planeGeometry args={[20, 16]} />
+                <meshStandardMaterial ref={matRef} map={texture} roughness={0.5} metalness={0} />
+            </mesh>
+            <Cylinder position={[0, -10, 0]} rotation={[0, 0, Math.PI / 2]} ref={bottom} />
         </>
     )
 }
