@@ -10,7 +10,12 @@ export const Cylinder = forwardRef((props, ref) => {
   return (
     <mesh ref={ref} {...props}>
       <cylinderGeometry args={[2, 2, 20, 32]} />
-      <meshStandardMaterial map={texture} roughness={0.5} metalness={0} />
+      <meshStandardMaterial map={texture} 
+        roughness={0.5} 
+        metalness={0} 
+        transparent={false}   
+        depthWrite={true}
+      />
     </mesh>
   )
 })
