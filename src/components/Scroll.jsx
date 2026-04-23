@@ -9,18 +9,20 @@ export const Scroll = () => {
     const planeRef = useRef()
     const progress = useRef(0)
 
-    useFrame((_, delta) => {
-        if (progress.current >= 1) return
-        progress.current = Math.min(progress.current + delta * 0.5, 1)
+useFrame((_, delta) => {
+    if (progress.current >= 1) return
+    progress.current = Math.min(progress.current + delta * 0.5, 1)
 
-        const t = progress.current
-        top.current.position.y = t * 10
-        bottom.current.position.y = t * -10
-        top.current.rotation.x = t * Math.PI * 2
-        bottom.current.rotation.x = -t * Math.PI * 2
-        planeRef.current.scale.y = t
-    })
+    const t = progress.current
+    const tPlane = Math.min(Math.pow(t, 0.3), 1) 
 
+    planeRef.current.scale.y = tPlane 
+
+    top.current.position.y = -12 + t * 22
+    top.current.rotation.x = t * Math.PI * 2
+
+    bottom.current.rotation.x = -t * Math.PI * 2
+})
     useEffect(() => {
         const handleScroll = () => {
             const scrollY = window.scrollY

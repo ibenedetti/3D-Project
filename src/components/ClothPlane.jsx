@@ -13,8 +13,6 @@ const vertexShader = `
     vUv = uv;
     vec3 pos = position;
 
-    // uMouse is in normalized -1..1 space
-    // plane is 30 wide, 200 tall — scale accordingly
     vec2 mouseWorld = uMouse * vec2(15.0, 100.0);
 
     float dist = distance(pos.xy, mouseWorld);
